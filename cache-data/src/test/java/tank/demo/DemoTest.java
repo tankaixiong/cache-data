@@ -1,0 +1,58 @@
+package tank.demo;
+
+import org.junit.Before;
+import org.junit.Test;
+import tank.common.BaseJunit;
+import tank.domain.Demo;
+import tank.service.DemoService;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+/**
+ * @Author: tank
+ * @Email: kaixiong.tan@qq.com
+ * @Date: 2017/1/14
+ * @Version: 1.0
+ * @Description:
+ */
+public class DemoTest extends BaseJunit {
+
+
+    @Resource
+    private DemoService demoService;
+
+    @Before
+    public void before(){
+        //DBCacheManager.getInstance().setDataProvider(dataProvider);
+    }
+    
+    @Test
+    public void testService() {
+        List<Demo> list=demoService.find();
+        for (Demo demo : list) {
+            System.out.println(demo.getRoleId()+"  "+demo.getName());
+        }
+    }
+
+
+    @Test
+    public void testAddEntity() {
+        for (int i = 0; i < 10; i++) {
+            Demo demo = new Demo();
+            demo.setAge(i);
+            demo.setRoleId(1000L + i);
+            demo.setName("hihi" + i);
+
+            demoService.add(demo);
+        }
+        try {
+            Thread.sleep(20000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+}

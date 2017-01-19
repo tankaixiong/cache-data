@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.googlecode.cqengine:cqengine:2.9.2">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.cqengine/cqengine/2.9.2/a4270f71a5dbb4f70f3f1e10c204cf778de4baa8/cqengine-2.9.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.cqengine/cqengine/2.9.2/30998c7e843a07730195894052e1e7a92d3e1f8d/cqengine-2.9.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
