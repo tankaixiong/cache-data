@@ -27,4 +27,8 @@ public class DemoService {
     public void add(Demo demo){
         demoRepository.add(demo);
     }
+
+    public void update(Demo demo) {
+        demoRepository.update(demo);
+    }
 }

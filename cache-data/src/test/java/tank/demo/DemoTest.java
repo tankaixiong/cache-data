@@ -38,13 +38,27 @@ public class DemoTest extends BaseJunit {
 
     @Test
     public void testAddEntity() {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 1000; i++) {
+
+            if(i%8==0){
+                try {
+                    Thread.sleep(1800);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
             Demo demo = new Demo();
             demo.setAge(i);
             demo.setRoleId(1000L + i);
             demo.setName("hihi" + i);
 
             demoService.add(demo);
+        }
+
+        List<Demo> list=demoService.find();
+        for (Demo demo : list) {
+            demo.setName(demo.getName()+"update");
+            demoService.update(demo);
         }
         try {
             Thread.sleep(20000);

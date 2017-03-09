@@ -29,7 +29,7 @@ import java.text.SimpleDateFormat;
  */
 public class JsonUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(JsonUtil.class);
-    public static ObjectMapper objectMapper;
+    private static ObjectMapper objectMapper;
 
     static {
         objectMapper = new ObjectMapper();

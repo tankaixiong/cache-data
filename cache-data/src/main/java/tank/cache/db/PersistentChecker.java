@@ -24,13 +24,14 @@ public class PersistentChecker {
     private static final Logger LOGGER = LoggerFactory.getLogger(PersistentChecker.class);
     // offer 添加一个元素并返回true 如果队列已满，则返回false
     // poll 移除并返问队列头部的元素 如果队列为空，则返回null
-    protected Queue<EntityStatus> queue = new ConcurrentLinkedQueue<EntityStatus>();//
+    //protected Queue<EntityStatus> queue = new ConcurrentLinkedQueue<EntityStatus>();//
 
-    public Map<Serializable, EntityStatus> entityStatusMap = new HashMap<>();
+    public Map<Serializable, EntityStatus> entityStatusMap = new ConcurrentHashMap<>();
+    public List<EntityStatus> changeList = new ArrayList<>();//保存所有的变更
 
     public static final long PERIOD = 10000;//入库间隔时间MS(最少大于1分钟)
     public static final long CHECK_STATUS = 2000;//当没有状态更新的情况下休眠（时间MS）后继续检查状态
-    private static volatile boolean isExit = false;
+    private volatile boolean isExit = false;
 
     ExecutorService executorService = Executors.newSingleThreadExecutor();
     Future future = null;
@@ -46,11 +47,20 @@ public class PersistentChecker {
 
     //添加对象状态变更
     public void change(Object entity, PersistentStatus status) {
-        queue.offer(new EntityStatus(entity, status));
+        //queue.offer(new EntityStatus(entity, status));
+        changeList.add(new EntityStatus(entity, status));
+    }
+
+    public void setIsExit(boolean isExit) {
+        this.isExit = isExit;
+    }
+
+    public boolean isExit() {
+        return isExit;
     }
 
     public void exit(boolean isExit) {
-        PersistentChecker.isExit = isExit;
+        setIsExit(isExit);
 
         try {
             LOGGER.info("等待数据入库...");
@@ -74,24 +84,48 @@ public class PersistentChecker {
 
                 long lastTime = System.currentTimeMillis();
 
-                while (!isExit || queue.size() > 0) {
+                while (!isExit) {
                     try {
-                        LOGGER.info("消耗状态队列{}", queue.size());
-                        //读取变更队列===》累积缓冲变更==》定时入库
-                        EntityStatus queueObj = queue.poll();
-                        if (queueObj != null) {
-                            Serializable entityId = EntityUtils.getUniqueId(queueObj.getObj());
-                            EntityStatus cacheObj = entityStatusMap.get(entityId);
-                            if (cacheObj != null) {
-                                PersistentStatus curStatus = getStatus(cacheObj.getStatus(), queueObj.getStatus());//更新状态
-                                cacheObj.setStatus(curStatus);
-                            } else {
-                                entityStatusMap.put(entityId, queueObj);
+                        int size = changeList.size();
+
+                        LOGGER.info("数据变更总数:{}", size);
+                        if (size > 0) {
+                            List<EntityStatus> entityStatusList = changeList.subList(0, size);
+
+                            for (EntityStatus entity : entityStatusList) {
+
+                                Serializable entityId = EntityUtils.getUniqueId(entity.getObj());
+                                EntityStatus cacheObj = entityStatusMap.get(entityId);
+                                if (cacheObj != null) {
+                                    PersistentStatus curStatus = getStatus(cacheObj.getStatus(), entity.getStatus());//更新状态
+                                    cacheObj.setStatus(curStatus);
+                                } else {
+                                    entityStatusMap.put(entityId, entity);
+                                }
+
                             }
+
+                            entityStatusList.clear();//这里清除
 
                         } else {
                             Thread.sleep(CHECK_STATUS);
                         }
+
+//                        //读取变更队列===》累积缓冲变更==》定时入库
+//                        EntityStatus queueObj = queue.poll();
+//                        if (queueObj != null) {
+//                            Serializable entityId = EntityUtils.getUniqueId(queueObj.getObj());
+//                            EntityStatus cacheObj = entityStatusMap.get(entityId);
+//                            if (cacheObj != null) {
+//                                PersistentStatus curStatus = getStatus(cacheObj.getStatus(), queueObj.getStatus());//更新状态
+//                                cacheObj.setStatus(curStatus);
+//                            } else {
+//                                entityStatusMap.put(entityId, queueObj);
+//                            }
+//
+//                        } else {
+//                            Thread.sleep(CHECK_STATUS);
+//                        }
 
                         if ((System.currentTimeMillis() - lastTime) >= PERIOD) {
 
@@ -129,7 +163,7 @@ public class PersistentChecker {
                     LOGGER.info("忽略");
                 }
 
-                iterator.remove();
+                iterator.remove();//移除
 
             } catch (Exception e) {
                 LOGGER.error("入库实体:{}", JsonUtil.toJson(status.getObj()));
