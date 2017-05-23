@@ -13,10 +13,12 @@ import java.util.Map;
  * @Description:
  */
 @ExcelEntity(file = "test.xlsx", sheet = "属性")
-public class Test {
+public class ExcelEntityDemo {
     protected Integer roleID;
     protected List<Integer[]> interval;
+
     protected List<Integer[]> attr;
+
     protected Map<Integer, Integer> test;
     protected List<Integer> test2;
     protected Boolean test3;
