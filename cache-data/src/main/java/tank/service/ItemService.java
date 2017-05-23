@@ -21,7 +21,7 @@ public class ItemService {
     private IItemRepository itemRepository;
 
     public List<Item> find(long roleId) {
-
+        //return itemRepository.find("select * from Item where num>3");
         return itemRepository.find(roleId, "select * from Item where num>3");
     }
 

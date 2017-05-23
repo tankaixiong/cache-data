@@ -1,6 +1,6 @@
 package tank.domain;
 
-import tank.cache.db.RoleId;
+import tank.cache.db.anno.CacheRole;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -15,10 +15,11 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "t_item")
+@CacheRole(roleIdField = "roleId")
 public class Item {
     @Id
     private Long id;
-    @RoleId
+    //@RoleId
     private Long roleId;
     private Long itemId;
     private String name;

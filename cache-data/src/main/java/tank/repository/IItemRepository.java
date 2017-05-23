@@ -1,6 +1,6 @@
 package tank.repository;
 
-import tank.cache.repository.IRoleCacheRepository;
+import tank.cache.repository.ICacheRepository;
 import tank.domain.Item;
 
 /**
@@ -10,5 +10,5 @@ import tank.domain.Item;
  * @Version: 1.0
  * @Description:
  */
-public interface IItemRepository extends IRoleCacheRepository<Item>{
+public interface IItemRepository extends ICacheRepository<Item> {
 }

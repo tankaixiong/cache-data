@@ -24,9 +24,15 @@ public class GlobalCacheEntity implements ICQCache {
     private Logger LOGGER = org.slf4j.LoggerFactory.getLogger(GlobalCacheEntity.class);
 
 
-    //两种策略，1，一表一个 IndexedCollection（class==>collection）；2，以roleId关联为一个IndexedCollection(roleId==>class==>collection)
-    //private static Map<Class<T>, SQLParser<T>> sqlParserMap = new HashMap<>();
+    //两种策略，
+    // 1，一表一个 IndexedCollection（class==>collection）；
+    // 2，以roleId关联为一个IndexedCollection(roleId==>class==>collection)
+    // 第2种方式效率更高，按roleId分类使得遍历次数减少效率更高
 
+
+    /**
+     * KEY 为 class,VAL 为IndexedCollection索引集合
+     */
     LoadingCache<Class<T>, IndexedCollection<T>> globalCache = CacheBuilder.newBuilder().build(new CacheLoader<Class<T>, IndexedCollection<T>>() {
 
         @Override

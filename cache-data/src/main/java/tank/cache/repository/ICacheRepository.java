@@ -13,4 +13,5 @@ public interface ICacheRepository<T> extends IBaseCacheRepository<T> {
 
     public List<T> find(String query);
 
+    List<T> find(long roleId, String query);
 }

@@ -19,10 +19,11 @@ import java.util.List;
  * @Email: kaixiong.tan@qq.com
  * @Date: 2017/1/14
  * @Version: 1.0
- * @Description: 操作缓存
+ * @Description: 操作roleId缓存==>CacheSupportRepository 替代
  */
 @Resource
-public abstract class RoleCacheRepository<T>  implements IRoleCacheRepository<T>  {
+@Deprecated
+public abstract class RoleCacheRepository<T> implements IRoleCacheRepository<T> {
     //@Resource
     private DBCacheManager cache = DBCacheManager.getInstance();
     private PersistentChecker checker = PersistentChecker.getInstant();

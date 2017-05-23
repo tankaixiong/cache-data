@@ -1,7 +1,7 @@
 package tank.repository;
 
 import org.springframework.stereotype.Repository;
-import tank.cache.repository.CacheRepository;
+import tank.cache.repository.CacheSupportRepository;
 import tank.domain.Demo;
 
 /**
@@ -12,5 +12,5 @@ import tank.domain.Demo;
  * @Description:
  */
 @Repository
-public class DemoRepository extends CacheRepository<Demo> implements IDemoRepository {
+public class DemoRepository extends CacheSupportRepository<Demo> implements IDemoRepository {
 }

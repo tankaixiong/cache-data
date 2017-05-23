@@ -54,6 +54,11 @@ public class ItemTest extends BaseJunit {
 
             itemService.add(item);
         }
+        try {
+            Thread.sleep(20000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
     }
 

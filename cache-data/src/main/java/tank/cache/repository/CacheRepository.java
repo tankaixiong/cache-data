@@ -20,8 +20,9 @@ import java.util.List;
  * @Email: kaixiong.tan@qq.com
  * @Date: 2017/1/14
  * @Version: 1.0
- * @Description: 操作缓存
+ * @Description: 全局操作缓存==>CacheSupportRepository 替代
  */
+@Deprecated
 @Resource
 public abstract class CacheRepository<T> implements ICacheRepository<T> {
     //@Resource

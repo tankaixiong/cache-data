@@ -5,11 +5,10 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import tank.cache.db.RoleId;
+import tank.cache.db.EntityUtils;
 
 import javax.annotation.Resource;
 import java.io.Serializable;
-import java.lang.reflect.Field;
 import java.util.List;
 
 /**
@@ -38,21 +37,23 @@ public class HibernateProvider implements IDataProvider {
     @Override
     @Transactional(readOnly = true)
     public List<T> findByRoleId(Class<T> clazz, Serializable roleId) {
-        String roleFiledName = null;
-        Field fields[] = clazz.getDeclaredFields();
-        for (Field field : fields) {
-            field.setAccessible(true);
-            RoleId roleIdAnno = field.getAnnotation(RoleId.class);
-            if (roleIdAnno != null) {
-                roleFiledName = field.getName();
-                break;
-            }
-        }
-        if (roleFiledName == null) {
-            throw new RuntimeException("没有找到roleId 注解字段");
-        }
+//        String roleFieldName = null;
+//        Field fields[] = clazz.getDeclaredFields();
+//        for (Field field : fields) {
+//            field.setAccessible(true);
+//            RoleId roleIdAnno = field.getAnnotation(RoleId.class);
+//            if (roleIdAnno != null) {
+//                roleFieldName = field.getName();
+//                break;
+//            }
+//        }
+//        if (roleFieldName == null) {
+//            throw new RuntimeException("没有找到roleId 注解字段");
+//        }
 
-        return getSession().createQuery(" FROM " + clazz.getSimpleName() + " WHERE " + roleFiledName + "=" + roleId).list();
+        String roleFieldName=EntityUtils.getEntityMeta(clazz).getRoleField();
+
+        return getSession().createQuery(" FROM " + clazz.getSimpleName() + " WHERE " + roleFieldName + "=" + roleId).list();
 
     }
 

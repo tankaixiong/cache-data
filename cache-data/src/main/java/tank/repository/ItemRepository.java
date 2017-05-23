@@ -1,7 +1,7 @@
 package tank.repository;
 
 import org.springframework.stereotype.Repository;
-import tank.cache.repository.RoleCacheRepository;
+import tank.cache.repository.CacheSupportRepository;
 import tank.domain.Item;
 
 /**
@@ -12,5 +12,5 @@ import tank.domain.Item;
  * @Description:
  */
 @Repository
-public class ItemRepository extends RoleCacheRepository<Item> implements IItemRepository{
+public class ItemRepository extends CacheSupportRepository<Item> implements IItemRepository {
 }

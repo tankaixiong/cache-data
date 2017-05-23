@@ -9,6 +9,7 @@ import java.util.List;
  * @Version: 1.0
  * @Description:
  */
+@Deprecated
 public interface IRoleCacheRepository<T> extends IBaseCacheRepository<T> {
 
     List<T> find(long roleId, String query);

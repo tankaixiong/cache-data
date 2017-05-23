@@ -1,5 +1,7 @@
 package tank.domain;
 
+import tank.cache.db.anno.CacheGlobal;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -13,6 +15,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "t_demo")
+@CacheGlobal
 public class Demo {
     @Id
     private Long roleId;
