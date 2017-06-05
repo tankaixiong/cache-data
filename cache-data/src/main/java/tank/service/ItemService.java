@@ -22,11 +22,16 @@ public class ItemService {
 
     public List<Item> find(long roleId) {
         //return itemRepository.find("select * from Item where num>3");
-        return itemRepository.find(roleId, "select * from Item where num>3");
+        return itemRepository.find(roleId, "select * from Item where num>0");
     }
 
     public void add(Item item) {
 
         itemRepository.add(item);
+    }
+
+    public void update(Item item) {
+
+        itemRepository.update(item);
     }
 }

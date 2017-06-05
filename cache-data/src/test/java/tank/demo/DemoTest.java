@@ -2,6 +2,7 @@ package tank.demo;
 
 import org.junit.Before;
 import org.junit.Test;
+import tank.cache.provider.IDataProvider;
 import tank.common.BaseJunit;
 import tank.domain.Demo;
 import tank.service.DemoService;
@@ -18,6 +19,8 @@ import java.util.List;
  */
 public class DemoTest extends BaseJunit {
 
+    @Resource
+    private IDataProvider dataProvider;
 
     @Resource
     private DemoService demoService;

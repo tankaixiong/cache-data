@@ -19,6 +19,7 @@ import java.util.List;
  * @Description: hibernate 接口操作数据库数据
  */
 @Component
+//@Transactional
 public class HibernateProvider implements IDataProvider {
     @Resource
     protected SessionFactory sessionFactory;
@@ -51,7 +52,7 @@ public class HibernateProvider implements IDataProvider {
 //            throw new RuntimeException("没有找到roleId 注解字段");
 //        }
 
-        String roleFieldName=EntityUtils.getEntityMeta(clazz).getRoleField();
+        String roleFieldName = EntityUtils.getEntityMeta(clazz).getRoleField();
 
         return getSession().createQuery(" FROM " + clazz.getSimpleName() + " WHERE " + roleFieldName + "=" + roleId).list();
 

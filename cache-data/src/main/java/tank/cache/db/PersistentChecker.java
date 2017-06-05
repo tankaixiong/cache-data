@@ -30,7 +30,7 @@ public class PersistentChecker {
     public List<EntityStatus> changeList = new ArrayList<>();//保存所有的变更
 
     public static final long PERIOD = 10000;//入库间隔时间MS(最少大于1分钟)
-    public static final long CHECK_STATUS = 2000;//当没有状态更新的情况下休眠（时间MS）后继续检查状态
+    public static final long CHECK_STATUS = 5000;//当没有状态更新的情况下休眠（时间MS）后继续检查状态
     private volatile boolean isExit = false;
 
     ExecutorService executorService = Executors.newSingleThreadExecutor();
