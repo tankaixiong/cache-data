@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="5 seconds">
+
+    <property name="LOG_HOME" value="/logs"/>
+
+    <!-- 控制台输出配置 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{MM-dd HH:mm:ss.SSS} [%thread] %-5level %class{0}[%line] - %msg%n</pattern>
+        </encoder>
+
+    </appender>
+
+    <!-- 文件输出配置 -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/server.log</file>
+
+        <encoder charset="UTF-8" class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>%d [%thread] %-5level %class{0}[%line] - %msg%n</Pattern>
+        </encoder>
+
+        <rollingPolicy  class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/archived/server.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <maxFileSize>10MB</maxFileSize>
+            <!--<maxHistory>60</maxHistory>-->
+            <!--<totalSizeCap>20GB</totalSizeCap>-->
+        </rollingPolicy>
+    </appender>
+
+    <!-- 将异常信息记录到单独文件中 -->
+    <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <file>${LOG_HOME}/server.error.log</file>
+
+        <encoder charset="UTF-8" class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>%d [%thread] %-5level %class{0}[%line] - %msg%n</Pattern>
+        </encoder>
+
+        <rollingPolicy name="errorRollingPolicy" class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/archived/server.error.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <maxFileSize>10MB</maxFileSize>
+            <!--<maxHistory>60</maxHistory>-->
+            <!--<totalSizeCap>20GB</totalSizeCap>-->
+        </rollingPolicy>
+    </appender>
+
+    <logger name="org.springframework" addtivity="false" level="WARN"/>
+    <logger name="org.hibernate" addtivity="false" level="INFO"/>
+    <logger name="org.jboss" addtivity="false" level="INFO"/>
+    <logger name="javassist" addtivity="false" level="INFO"/>
+    <logger name="org.apache.commons.configuration" addtivity="false" level="INFO"/>
+    <logger name="com.mchange.v2" addtivity="false" level="INFO"/>
+    <logger name="org.apache.commons.beanutils" addtivity="false" level="INFO"/>
+    <logger name="org.apache.http" addtivity="false" level="INFO"/>
+    <logger name="org.quartz" addtivity="false" level="INFO"/>
+    <logger name="com.xy.inuyasha" level="DEBUG"/>
+
+    <root level="DEBUG">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="ERROR_FILE"/>
+    </root>
+
+    <!--数据日志单存一个文件目录-->
+    <!--
+    <appender name="DATA_ROLLING_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/data.log</file>
+        <encoder charset="UTF-8" class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>%d||%msg%n</Pattern>
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/archived/data.%d{yyyy-MM-dd}_%i.log.zip</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>15MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
+
+    <logger name="com.xy.inuyasha.support.log.file" level="INFO" additivity="false">
+        <appender-ref ref="DATA_ROLLING_FILE"/>
+    </logger>
+    -->
+
+</configuration>

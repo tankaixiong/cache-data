@@ -1,6 +1,8 @@
 package tank.demo;
 
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tank.utils.IdGenerator;
 
 import java.util.concurrent.BrokenBarrierException;
@@ -14,6 +16,8 @@ import java.util.concurrent.CyclicBarrier;
  * @Description:
  */
 public class IdTest {
+
+    private Logger LOG = LoggerFactory.getLogger(IdTest.class);
 
     @Test
     public void testId() {
@@ -31,7 +35,7 @@ public class IdTest {
                     } catch (BrokenBarrierException e) {
                         e.printStackTrace();
                     }
-                    System.out.println(IdGenerator.nextId());
+                    LOG.info("{}", IdGenerator.nextId());
                 }
             }.start();
         }
@@ -42,6 +46,15 @@ public class IdTest {
             e.printStackTrace();
         }
 
+    }
 
+    @Test
+    public void testLog() {
+
+        for (int i = 0; i < 10000; i++) {
+
+            LOG.info("{}", "测试日志");
+            LOG.error("{}", "测试日志");
+        }
     }
 }
